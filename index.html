@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="sv">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="css/styles.css">
+        <script src="/functions.js"></script>
+        <title>Arbetsplatser</title>
+    </head>
+
+    <body>
+        <div id="cont">
+            <header>
+                <nav>
+                    <ul>
+                        <li><a href="login.html">Login</a></li>
+                        <li class="active"><a href="index.html">CV</a></li>
+                        <li><a href="add.html">New</a></li>
+                        <li><a href="about.html">About</a></li>
+                    </ul>
+                </nav>
+            </header>
+            <main id="index">
+                <h1>CV</h1>
+                <div id="workplacelist"></div>
+                <script>
+                    list();
+
+                    if (!window.sessionStorage.getItem("token"))
+                    {
+                        window.location.replace("login.html");
+                    }
+
+                    async function list(){
+                    let data = await getData();
+                    let ulList = document.createElement('ul');
+
+                    if(data.length >0) { 
+                        data.forEach((row) => {
+                            let complanynameli = document.createElement('li');
+                            complanynameli.classList.add("companynameli");
+                            complanynameli.innerText = row.companyname;            
+                            ulList.appendChild(complanynameli);
+                            
+                            let locationli = document.createElement('li');
+                            locationli.innerText = row.location;            
+                            ulList.appendChild(locationli);
+
+                            let startli = document.createElement('li');
+                            startli.innerText = "From: " + row.startdate;            
+                            startli.classList.add("cursive");
+                            ulList.appendChild(startli);                   
+
+                            let endli = document.createElement('li');
+                            endli.innerText = "To: " + row.enddate;            
+                            endli.classList.add("cursive");
+                            ulList.appendChild(endli); 
+
+                            let titleli = document.createElement('li');
+                            titleli.innerText = "Title: " + row.title;            
+                            ulList.appendChild(titleli);                           
+
+                            let descriptionli = document.createElement('li');
+                            descriptionli.innerText = "Description: " + row.description;            
+                            descriptionli.classList.add("cursive");
+                            ulList.appendChild(descriptionli);
+                            
+                            let clinksli = document.createElement('li');
+                            ulList.appendChild(clinksli);
+                            let clinksul = document.createElement('ul');
+                            clinksli.appendChild(clinksul);
+
+                            let clinksdelli = document.createElement('li');
+                            clinksul.appendChild(clinksdelli);
+                            clinksdelli.innerText = 'Delete'; 
+                            clinksdelli.setAttribute("id", "del" + row._id);
+                            
+                            let dellink = document.getElementById(clinksdelli.id);
+                            clinksdelli.setAttribute("onclick", 'deleteWorkplace("' + row._id + '")');
+                            clinksdelli.classList.add("clinks");
+
+                            let clinkseditli = document.createElement('li');
+                            clinksul.appendChild(clinkseditli);
+                            clinkseditli.classList.add("clinks");
+                            clinkseditli.innerText = 'Edit'; 
+                            clinkseditli.setAttribute("id", "edit" + row._id);
+                            
+                            let editlink = document.getElementById(clinkseditli.id);
+                            clinkseditli.innerHTML = "<a href='edit.html?id=" + row._id + "'>Edit</a>";
+
+                        })
+                    }
+                    let workplacelist = document.getElementById('workplacelist');
+                    workplacelist.appendChild(ulList);
+                };
+                </script>
+            </main>
+        </div>
+        
+    </body>
+</html>
+

@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="sv">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="css/styles.css">
+        <script src="/functions.js"></script>
+        <title>Add workplace</title>
+    </head>
+    <body>
+        <div id="cont">
+            <header>
+                <nav>
+                    <ul>
+                        <li><a href="login.html">Login</a></li>
+                        <li><a href="index.html">CV</a></li>
+                        <li class="active"><a href="add.html">New</a></li>
+                        <li><a href="about.html">About</a></li>
+                    </ul>
+                </nav>
+            </header>
+
+            <main id="add">
+                <h1>Add workplace</h1>
+                <div id="formmessage">
+                    
+                </div>
+                
+                <form id="addform" method="post">
+            
+                    <label for="companyname">Companyname:</label><br>
+                    <input value="" type="text" id="companyname" name="companyname"><br>
+
+                    <label for="location">Location:</label><br>
+                    <input value="" type="text" id="location" name="location"><br>
+
+                    <label for="startdate">Startdate:</label><br>
+                    <input value="" type="date" id="startdate" name="startdate"><br>
+
+                    <label for="enddate">Enddate:</label><br>
+                    <input value="" type="date" id="enddate" name="enddate" ><br>
+
+                    <label for="title">Title:</label><br>
+                    <input value="" type="text" id="title" name="title" ><br>
+
+                    <label for="description">Description:</label><br>
+                    <input value="" type="text" id="description" name="description" ><br>
+                    
+                    <input class="" type="button" onclick="submitform()" value="Add workplace">
+                </form>
+                <script type="text/javascript">
+                    if (!window.sessionStorage.getItem("token"))
+                    {
+                        window.location.replace("login.html");
+                    }
+                    async function submitform(){
+                        let companyname = document.getElementById("companyname").value;
+                        let location = document.getElementById("location").value;
+                        let startdate = document.getElementById("startdate").value;
+                        let enddate = document.getElementById("enddate").value;
+                        let title = document.getElementById("title").value;
+                        let description = document.getElementById("description").value;
+                       //skickar values får tillbaka result 
+                        let result = await createWorkplace(companyname, location, startdate, enddate, title, description);
+                        //om svaret ör ett felmeddelande så blir meddelandet dåligt annars bra
+                        if (result.errors) { 
+                            document.getElementById("formmessage").innerText = "All fields needs to be filled in";
+                            document.getElementById("formmessage").className = 'bad';
+                            return;
+                        }
+
+                        document.getElementById("formmessage").innerText = "The workplace has been added";
+                        document.getElementById("formmessage").className = 'good';
+      
+                        document.getElementById("companyname").value ="";
+                        document.getElementById("location").value ="";
+                        document.getElementById("startdate").value ="";
+                        document.getElementById("enddate").value ="";
+                        document.getElementById("title").value ="";
+                        document.getElementById("description").value ="";
+                    }
+
+                </script>
+            </main>
+        </div>
+    </body>
+</html>

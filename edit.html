@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="sv">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="/css/styles.css">
+        <script src="/functions.js"></script>
+        <title>Edit Workplace</title>
+    </head>
+
+    <body>
+        <div id="cont">
+            <header>
+                <nav>
+                    <ul>
+                        <li><a href="index.html">CV</a></li>
+                        <li><a href="add.html">New</a></li>
+                        <li><a href="about.html">About</a></li>
+                    </ul>
+                </nav>
+            </header>
+
+            <main id="edit">
+                <nav>
+                    <ol>
+                        <li><a href="index.html">CV</a></li>
+                        <li>></li>
+                        <li><a>Edit Workplace</a></li>
+                    </ol>
+                </nav>
+                <h1>Edit Workplace</h1>
+                
+                <div id="formmessage">
+                    
+                </div>
+
+                <form method="put">
+                       <!--FIX ME
+                    if(error != ""){ 
+                        <p class="error"><></p>
+                    };
+                     if(message != ""){ %>
+                        <p class="message">< message ></p>
+                     }; -->
+                    
+                     <label for="companyname">Companyname:</label><br>
+                     <input type="text" id="companyname" name="companyname"><br>
+ 
+                     <label for="location">Location:</label><br>
+                     <input type="text" id="location" name="location" value=""><br>
+ 
+                     <label for="startdate">Startdate:</label><br>
+                     <input type="date" id="startdate" name="startdate" value=""><br>
+ 
+                     <label for="enddate">Enddate:</label><br>
+                     <input type="date" id="enddate" name="enddate" value=""><br>
+ 
+                     <label for="title">Title:</label><br>
+                     <input type="text" id="title" name="title" value=""><br>
+ 
+                     <label for="description">Description:</label><br>
+                     <input type="text" id="description" name="description" value=""><br>
+                     
+                     <input class="addbtn" type="button" onclick="submitform()" value="Edit workplace">
+                </form>
+                <script type="text/javascript">
+                    if (!window.sessionStorage.getItem("token"))
+                    {
+                        window.location.replace("login.html");
+                    }
+
+                    getValues();
+                    async function getValues(){
+                        const queryString = window.location.search;
+                        const getParams = new URLSearchParams(queryString);
+                        const id = getParams.get('id');
+                        let workplace = await getWorkplace(id);
+                        let companyname = workplace.companyname;
+                        let location = workplace.location;
+                        let startdate = workplace.startdate;
+                        let enddate = workplace.enddate;
+                        let title = workplace.title;
+                        let description = workplace.description;
+
+                        document.getElementById("companyname").value = companyname;
+                        document.getElementById("location").value =location;
+                        document.getElementById("startdate").value =startdate;
+                        document.getElementById("enddate").value =enddate;
+                        document.getElementById("title").value =title;
+                        document.getElementById("description").value =description;
+
+                    }
+                    
+                        async function submitform(){
+
+                        const queryString = window.location.search;
+                        const getParams = new URLSearchParams(queryString);
+                        const id = getParams.get('id');
+
+                        let companyname = document.getElementById("companyname").value;
+                        let location = document.getElementById("location").value;
+                        let startdate = document.getElementById("startdate").value;
+                        let enddate = document.getElementById("enddate").value;
+                        let title = document.getElementById("title").value;
+                        let description = document.getElementById("description").value;
+                            
+                       //skickar values får tillbaka result 
+
+                        let result = await changeWorkplace(id, companyname, location, startdate, enddate, title, description);
+
+                        if (result.errors) { 
+                            document.getElementById("formmessage").innerText = "All fields needs to be filled in";
+                            document.getElementById("formmessage").className = 'bad';
+                            return;
+                        }
+
+                        document.getElementById("formmessage").innerText = "The workplace has been edited";
+                        document.getElementById("formmessage").className = 'good';
+
+                        document.getElementById("companyname").value ="";
+                        document.getElementById("location").value ="";
+                        document.getElementById("startdate").value ="";
+                        document.getElementById("enddate").value ="";
+                        document.getElementById("title").value ="";
+                        document.getElementById("description").value ="";
+                    }
+                </script>
+            </main>
+        </div>
+    </body>
+</html>
