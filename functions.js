@@ -74,7 +74,16 @@ async function getData() {
 async function getWorkplace(id) {
     let url = "http://127.0.0.1:3000/workplaces";
 
-    const response = await fetch(url);
+    let token = window.sessionStorage.getItem("token");
+
+    console.log("token sent: " + token);
+    const response = await fetch(url, {
+
+        headers: {
+            "Authorization": "Bearer " + token
+        },
+    });
+
     const data = await response.json();
     
     for (let i=0; i<data.length; i++) {
@@ -101,11 +110,14 @@ async function createWorkplace(companyname, location, startdate, enddate, title,
         title: title,
         description: description
     }; 
-    
+    let token = window.sessionStorage.getItem("token");
+
+    console.log("token sent: " + token);
     const response = await fetch(url, {
         method: "POST",
         headers: {
-            "content-type": "Application/json"
+            "content-type": "Application/json",
+            "Authorization": "Bearer " + token
         },
         body: JSON.stringify(workplaces)
     });
@@ -129,13 +141,17 @@ async function changeWorkplace(id, companyname, location, startdate, enddate, ti
         title: title,
         description: description
     }; 
+    let token = window.sessionStorage.getItem("token");
+
+    console.log("token sent: " + token);
     const response = await fetch(url, {
         method: "PUT",
         headers: {
-            "content-type": "Application/json"
+            "content-type": "Application/json",
+            "Authorization": "Bearer " + token
         },
         body: JSON.stringify(workplaces)
-    })
+    });
     
     const data = await response.json();
 
@@ -147,14 +163,18 @@ async function changeWorkplace(id, companyname, location, startdate, enddate, ti
 async function deleteWorkplace(id) {
     let url = "http://127.0.0.1:3000/workplaces/" + id;
     console.log(url);
+let token = window.sessionStorage.getItem("token");
+
+    console.log("token sent: " + token);
     const response = await fetch(url, {
         method: "DELETE",
         headers: {
-            "content-type": "Application/json"
+            "content-type": "Application/json",
+            "Authorization": "Bearer " + token
         },
-       
+    
     });
-
+    
     if (!response.ok) {
         throw new Error("somethig went wrong");
     }
