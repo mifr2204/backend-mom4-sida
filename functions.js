@@ -1,12 +1,8 @@
-//Is logged in
-
 
 //logs in user
 async function loginUser(username, password) {
     let url = "http://127.0.0.1:3000/api/login";
 
-    //const response = await fetch(url);
-    //const data = await response.json();
     const userData = {username, password};
     const response = await fetch(url, {
         method: "POST",
@@ -17,7 +13,7 @@ async function loginUser(username, password) {
        
     });
     const data = await response.json();
-    console.dir(data);
+   
 
     if (data.response){
         window.sessionStorage.setItem("token", data.response.token);
@@ -48,7 +44,7 @@ async function registrerUser(firstname, lastname, email, username, password) {
     });
     
     const data = await response.json();
-    console.log(data);
+    
     return data;
 };
 
@@ -162,7 +158,7 @@ async function changeWorkplace(id, companyname, location, startdate, enddate, ti
 //deletes a workplace
 async function deleteWorkplace(id) {
     let url = "http://127.0.0.1:3000/workplaces/" + id;
-    console.log(url);
+    
 let token = window.sessionStorage.getItem("token");
 
     console.log("token sent: " + token);
