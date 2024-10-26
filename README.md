@@ -4,8 +4,6 @@ Funktionalitet för CRUD finns
 
 Apiet använder port 3000
 
-
-
 Länk till webbsida
 https://studenter.miun.se/~mifr2204/backend/azure-backend-mom4-sida/index.html
 

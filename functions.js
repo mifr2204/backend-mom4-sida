@@ -36,6 +36,7 @@ async function registrerUser(firstname, lastname, email, username, password) {
     }; 
     
     const response = await fetch(url, {
+            
         method: "POST",
         headers: {
             "content-type": "Application/json"
